@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mediama0.com/sitemap.xml
+
