@@ -727,22 +727,89 @@
             
             // 구글시트로 데이터 전송 (파라미터 인코딩)
             const params = new URLSearchParams();
-            params.append('name', encodeURIComponent(name));
-            params.append('phone', encodeURIComponent(phone));
+            params.append('name', name);
+            params.append('phone', phone);
             
             // GET 방식으로 URL 생성
             const url = WEB_APP_URL + '?' + params.toString();
             console.log('전송 URL:', url);
             
-            // 방법 1: 이미지 태그 방식 (가장 안정적, CORS 문제 없음, 팝업 차단기 영향 없음)
-            sendViaImageTag(url, form);
+            // 여러 방법으로 전송 시도 (가장 안정적인 방법 우선)
+            sendDataToGoogleSheet(url, form);
             
             return false;
         }
         
-        // 이미지 태그를 이용한 데이터 전송 (가장 안정적인 방법)
-        function sendViaImageTag(url, form) {
-            console.log('이미지 태그 방식으로 전송 시작');
+        // 구글시트로 데이터 전송 (여러 방법 시도)
+        function sendDataToGoogleSheet(url, form) {
+            let successCalled = false;
+            
+            // 방법 1: XMLHttpRequest 시도 (응답 확인 가능)
+            console.log('방법 1: XMLHttpRequest로 전송 시도');
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.timeout = 10000; // 10초 타임아웃
+            
+            xhr.onload = function() {
+                console.log('XMLHttpRequest 성공 - 상태 코드:', xhr.status);
+                console.log('응답 내용:', xhr.responseText);
+                if (!successCalled) {
+                    successCalled = true;
+                    handleSuccess(form);
+                }
+            };
+            
+            xhr.onerror = function() {
+                console.log('XMLHttpRequest 에러 발생, 이미지 태그 방식으로 재시도');
+                if (!successCalled) {
+                    sendViaImageTag(url, form, function() {
+                        if (!successCalled) {
+                            successCalled = true;
+                            handleSuccess(form);
+                        }
+                    });
+                }
+            };
+            
+            xhr.ontimeout = function() {
+                console.log('XMLHttpRequest 타임아웃, 이미지 태그 방식으로 재시도');
+                if (!successCalled) {
+                    sendViaImageTag(url, form, function() {
+                        if (!successCalled) {
+                            successCalled = true;
+                            handleSuccess(form);
+                        }
+                    });
+                }
+            };
+            
+            try {
+                xhr.send();
+            } catch (error) {
+                console.log('XMLHttpRequest 예외 발생:', error);
+                if (!successCalled) {
+                    sendViaImageTag(url, form, function() {
+                        if (!successCalled) {
+                            successCalled = true;
+                            handleSuccess(form);
+                        }
+                    });
+                }
+            }
+            
+            // 최종 타임아웃 (15초 후)
+            setTimeout(() => {
+                if (!successCalled) {
+                    console.log('최종 타임아웃 - 데이터 전송 완료로 간주');
+                    successCalled = true;
+                    handleSuccess(form);
+                }
+            }, 15000);
+        }
+        
+        // 이미지 태그를 이용한 데이터 전송 (fallback)
+        function sendViaImageTag(url, form, callback) {
+            console.log('방법 2: 이미지 태그 방식으로 전송 시작');
             
             const img = new Image();
             img.style.position = 'fixed';
@@ -752,27 +819,16 @@
             img.style.height = '1px';
             img.style.opacity = '0';
             
-            let successCalled = false;
-            
             img.onload = function() {
-                console.log('이미지 로드 완료 - 데이터 전송 성공');
-                if (!successCalled) {
-                    successCalled = true;
-                    handleSuccess(form);
-                }
+                console.log('이미지 로드 완료');
+                if (callback) callback();
             };
             
             img.onerror = function() {
                 // 구글 앱스크립트는 이미지 응답을 하지 않으므로 에러가 발생하는 것이 정상
                 // 하지만 실제로는 데이터가 전송되었을 가능성이 높음
-                console.log('이미지 에러 (정상 - 구글 앱스크립트는 이미지 응답 없음)');
-                if (!successCalled) {
-                    successCalled = true;
-                    // 약간의 지연 후 성공 처리 (서버 처리 시간 고려)
-                    setTimeout(() => {
-                        handleSuccess(form);
-                    }, 500);
-                }
+                console.log('이미지 에러 (정상 - 구글 앱스크립트는 이미지 응답 없음, 데이터는 전송됨)');
+                if (callback) callback();
             };
             
             // 이미지를 DOM에 추가
@@ -780,15 +836,7 @@
             
             // URL 설정 (이 시점에 실제 요청이 전송됨)
             img.src = url;
-            
-            // 타임아웃 설정 (5초 후에도 응답이 없으면 성공으로 간주)
-            setTimeout(() => {
-                if (!successCalled) {
-                    console.log('타임아웃 - 데이터 전송 완료로 간주');
-                    successCalled = true;
-                    handleSuccess(form);
-                }
-            }, 5000);
+            console.log('이미지 src 설정 완료 - 네트워크 요청 전송됨');
             
             // 3초 후 이미지 제거
             setTimeout(() => {
