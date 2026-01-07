@@ -538,6 +538,8 @@
         });
 
         // 폼 제출 처리
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzfA4ib5pSvFeXdYceboLrQxg-lwC9R-JENb7vY3ctHLcqAGGxfACwaBldrLLY5lxL_/exec';
+
         function Request_input_check(form) {
             const name = form.input_0.value.trim();
             const phone1 = form.input_0_1.value;
@@ -565,12 +567,30 @@
                 return false;
             }
             
-            // 여기에 실제 제출 로직을 추가하세요
-            console.log('이름:', name);
-            console.log('연락처:', phone1 + '-' + phone2 + '-' + phone3);
+            const phone = phone1 + '-' + phone2 + '-' + phone3;
             
-            alert('신청이 완료되었습니다.');
-            form.reset();
+            // 구글시트로 데이터 전송
+            const formData = new URLSearchParams();
+            formData.append('name', name);
+            formData.append('phone', phone);
+            
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData
+            })
+            .then(() => {
+                alert('신청이 완료되었습니다.');
+                form.reset();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('신청 중 오류가 발생했습니다. 다시 시도해주세요.');
+            });
+            
             return false;
         }
     </script>
