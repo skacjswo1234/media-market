@@ -672,11 +672,18 @@
             console.log('전송 URL:', url);
             console.log('인코딩된 파라미터:', params.toString());
             
-            // 방법 1: window.open으로 새 창에서 열기 (가장 확실한 방법)
+            // 중복 전송 방지를 위한 플래그
+            if (form.dataset.submitting === 'true') {
+                console.log('이미 전송 중입니다.');
+                return false;
+            }
+            form.dataset.submitting = 'true';
+            
+            // window.open으로 새 창에서 열기 (한 번만 실행)
             const newWindow = window.open(url, '_blank', 'width=1,height=1');
             console.log('새 창 열기 시도');
             
-            // 1초 후 창 닫기
+            // 1초 후 창 닫기 및 모달 표시
             setTimeout(function() {
                 if (newWindow) {
                     newWindow.close();
@@ -684,34 +691,9 @@
                 }
                 openSuccessModal();
                 form.reset();
+                form.dataset.submitting = 'false'; // 플래그 리셋
                 console.log('모달 표시 및 폼 리셋 완료');
             }, 1000);
-            
-            // 방법 2: iframe도 함께 시도 (백업)
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.style.width = '1px';
-            iframe.style.height = '1px';
-            iframe.style.position = 'absolute';
-            iframe.style.left = '-9999px';
-            
-            iframe.onload = function() {
-                console.log('iframe 로드 완료');
-                setTimeout(function() {
-                    if (document.body.contains(iframe)) {
-                        document.body.removeChild(iframe);
-                        console.log('iframe 제거 완료');
-                    }
-                }, 2000);
-            };
-            
-            iframe.onerror = function() {
-                console.error('iframe 로드 에러');
-            };
-            
-            iframe.src = url;
-            document.body.appendChild(iframe);
-            console.log('iframe 추가 완료');
             
             return false;
         }
