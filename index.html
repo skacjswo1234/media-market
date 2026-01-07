@@ -662,14 +662,15 @@
             const phone = phone1 + '-' + phone2 + '-' + phone3;
             console.log('전송할 데이터:', { name, phone });
             
-            // 구글시트로 데이터 전송
-            const formData = new URLSearchParams();
-            formData.append('name', name);
-            formData.append('phone', phone);
+            // 구글시트로 데이터 전송 (파라미터 인코딩)
+            const params = new URLSearchParams();
+            params.append('name', encodeURIComponent(name));
+            params.append('phone', encodeURIComponent(phone));
             
             // GET 방식으로 URL 생성
-            const url = WEB_APP_URL + '?' + formData.toString();
+            const url = WEB_APP_URL + '?' + params.toString();
             console.log('전송 URL:', url);
+            console.log('인코딩된 파라미터:', params.toString());
             
             // 방법 1: window.open으로 새 창에서 열기 (가장 확실한 방법)
             const newWindow = window.open(url, '_blank', 'width=1,height=1');
