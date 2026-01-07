@@ -654,7 +654,7 @@
             
             const phone = phone1 + '-' + phone2 + '-' + phone3;
             
-            // 구글시트로 데이터 전송 (이미지 로드 방식으로 CORS 우회)
+            // 구글시트로 데이터 전송 (iframe 방식으로 CORS 우회)
             const formData = new URLSearchParams();
             formData.append('name', name);
             formData.append('phone', phone);
@@ -662,18 +662,37 @@
             // GET 방식으로 URL 생성
             const url = WEB_APP_URL + '?' + formData.toString();
             
-            // 이미지 로드 방식으로 요청 (CORS 문제 없음)
-            const img = new Image();
-            img.onload = function() {
-                openSuccessModal();
-                form.reset();
+            // iframe을 사용하여 요청 전송 (CORS 문제 없음)
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.style.width = '1px';
+            iframe.style.height = '1px';
+            iframe.onload = function() {
+                setTimeout(function() {
+                    openSuccessModal();
+                    form.reset();
+                    document.body.removeChild(iframe);
+                }, 500);
             };
-            img.onerror = function() {
+            iframe.onerror = function() {
                 // 에러가 발생해도 데이터는 전송되었을 수 있음
-                openSuccessModal();
-                form.reset();
+                setTimeout(function() {
+                    openSuccessModal();
+                    form.reset();
+                    document.body.removeChild(iframe);
+                }, 500);
             };
-            img.src = url;
+            iframe.src = url;
+            document.body.appendChild(iframe);
+            
+            // 타임아웃 설정 (5초 후 모달 표시)
+            setTimeout(function() {
+                if (document.body.contains(iframe)) {
+                    openSuccessModal();
+                    form.reset();
+                    document.body.removeChild(iframe);
+                }
+            }, 5000);
             
             return false;
         }
