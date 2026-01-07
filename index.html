@@ -626,18 +626,24 @@
         });
 
         function Request_input_check(form) {
+            console.log('=== 신청하기 버튼 클릭 ===');
+            
             const name = form.input_0.value.trim();
             const phone1 = form.input_0_1.value;
             const phone2 = form.input_1_1.value.trim();
             const phone3 = form.input_2_1.value.trim();
             
+            console.log('입력값 확인:', { name, phone1, phone2, phone3 });
+            
             if (!name) {
+                console.error('이름이 비어있음');
                 alert('이름을 입력해주세요.');
                 form.input_0.focus();
                 return false;
             }
             
             if (!phone2 || !phone3) {
+                console.error('연락처가 비어있음:', { phone2, phone3 });
                 alert('연락처를 올바르게 입력해주세요.');
                 if (!phone2) {
                     form.input_1_1.focus();
@@ -648,51 +654,63 @@
             }
             
             if (phone2.length !== 4 || phone3.length !== 4) {
+                console.error('연락처 길이 오류:', { phone2Length: phone2.length, phone3Length: phone3.length });
                 alert('연락처를 올바르게 입력해주세요.');
                 return false;
             }
             
             const phone = phone1 + '-' + phone2 + '-' + phone3;
+            console.log('전송할 데이터:', { name, phone });
             
-            // 구글시트로 데이터 전송 (iframe 방식으로 CORS 우회)
+            // 구글시트로 데이터 전송
             const formData = new URLSearchParams();
             formData.append('name', name);
             formData.append('phone', phone);
             
             // GET 방식으로 URL 생성
             const url = WEB_APP_URL + '?' + formData.toString();
+            console.log('전송 URL:', url);
             
-            // iframe을 사용하여 요청 전송 (CORS 문제 없음)
+            // 방법 1: window.open으로 새 창에서 열기 (가장 확실한 방법)
+            const newWindow = window.open(url, '_blank', 'width=1,height=1');
+            console.log('새 창 열기 시도');
+            
+            // 1초 후 창 닫기
+            setTimeout(function() {
+                if (newWindow) {
+                    newWindow.close();
+                    console.log('새 창 닫기');
+                }
+                openSuccessModal();
+                form.reset();
+                console.log('모달 표시 및 폼 리셋 완료');
+            }, 1000);
+            
+            // 방법 2: iframe도 함께 시도 (백업)
             const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
             iframe.style.width = '1px';
             iframe.style.height = '1px';
+            iframe.style.position = 'absolute';
+            iframe.style.left = '-9999px';
+            
             iframe.onload = function() {
+                console.log('iframe 로드 완료');
                 setTimeout(function() {
-                    openSuccessModal();
-                    form.reset();
-                    document.body.removeChild(iframe);
-                }, 500);
+                    if (document.body.contains(iframe)) {
+                        document.body.removeChild(iframe);
+                        console.log('iframe 제거 완료');
+                    }
+                }, 2000);
             };
+            
             iframe.onerror = function() {
-                // 에러가 발생해도 데이터는 전송되었을 수 있음
-                setTimeout(function() {
-                    openSuccessModal();
-                    form.reset();
-                    document.body.removeChild(iframe);
-                }, 500);
+                console.error('iframe 로드 에러');
             };
+            
             iframe.src = url;
             document.body.appendChild(iframe);
-            
-            // 타임아웃 설정 (5초 후 모달 표시)
-            setTimeout(function() {
-                if (document.body.contains(iframe)) {
-                    openSuccessModal();
-                    form.reset();
-                    document.body.removeChild(iframe);
-                }
-            }, 5000);
+            console.log('iframe 추가 완료');
             
             return false;
         }
