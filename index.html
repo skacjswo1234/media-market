@@ -468,6 +468,80 @@
             background: #8a4dd4;
         }
 
+        /* 로딩 오버레이 */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(2px);
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-content {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            min-width: 200px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 20px;
+            border: 4px solid #e7e8eb;
+            border-top-color: #9d59eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 8px;
+        }
+
+        .loading-subtext {
+            font-size: 13px;
+            color: #646465;
+        }
+
+        /* 버튼 비활성화 상태 */
+        .Submit_Button.loading a {
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .Submit_Button.loading a::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -626,6 +700,15 @@
         </div>
     </div>
 
+    <!-- 로딩 오버레이 -->
+    <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">전송 중...</div>
+            <div class="loading-subtext">잠시만 기다려주세요</div>
+        </div>
+    </div>
+
     <!-- 신청 완료 모달 -->
     <div id="successModal" class="modal-overlay" aria-hidden="true">
         <div class="modal" role="dialog" aria-modal="true">
@@ -663,6 +746,26 @@
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzfA4ib5pSvFeXdYceboLrQxg-lwC9R-JENb7vY3ctHLcqAGGxfACwaBldrLLY5lxL_/exec';
         const successModal = document.getElementById('successModal');
         const closeModalBtn = document.getElementById('closeModalBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const inquiryForm = document.getElementById('inquiryForm');
+
+        function showLoading() {
+            loadingOverlay.classList.add('show');
+            loadingOverlay.setAttribute('aria-hidden', 'false');
+            const submitButton = inquiryForm.querySelector('.Submit_Button');
+            if (submitButton) {
+                submitButton.classList.add('loading');
+            }
+        }
+
+        function hideLoading() {
+            loadingOverlay.classList.remove('show');
+            loadingOverlay.setAttribute('aria-hidden', 'true');
+            const submitButton = inquiryForm.querySelector('.Submit_Button');
+            if (submitButton) {
+                submitButton.classList.remove('loading');
+            }
+        }
 
         function openSuccessModal() {
             successModal.classList.add('open');
@@ -724,6 +827,9 @@
                 return false;
             }
             form.dataset.submitting = 'true';
+            
+            // 로딩 표시 시작
+            showLoading();
             
             // 구글시트로 데이터 전송 (파라미터 인코딩)
             const params = new URLSearchParams();
@@ -797,14 +903,14 @@
                 }
             }
             
-            // 최종 타임아웃 (15초 후)
+            // 최종 타임아웃 (12초 후) - 로딩이 너무 오래 지속되지 않도록
             setTimeout(() => {
                 if (!successCalled) {
                     console.log('최종 타임아웃 - 데이터 전송 완료로 간주');
                     successCalled = true;
                     handleSuccess(form);
                 }
-            }, 15000);
+            }, 12000);
         }
         
         // 이미지 태그를 이용한 데이터 전송 (fallback)
@@ -848,10 +954,16 @@
         
         // 성공 처리 함수
         function handleSuccess(form) {
-            openSuccessModal();
-            form.reset();
-            form.dataset.submitting = 'false';
-            console.log('모달 표시 및 폼 리셋 완료');
+            // 로딩 숨기기
+            hideLoading();
+            
+            // 약간의 지연 후 성공 모달 표시 (부드러운 전환)
+            setTimeout(() => {
+                openSuccessModal();
+                form.reset();
+                form.dataset.submitting = 'false';
+                console.log('모달 표시 및 폼 리셋 완료');
+            }, 300);
         }
     </script>
 
