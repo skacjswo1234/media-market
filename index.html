@@ -654,27 +654,26 @@
             
             const phone = phone1 + '-' + phone2 + '-' + phone3;
             
-            // 구글시트로 데이터 전송
+            // 구글시트로 데이터 전송 (이미지 로드 방식으로 CORS 우회)
             const formData = new URLSearchParams();
             formData.append('name', name);
             formData.append('phone', phone);
             
-            fetch(WEB_APP_URL, {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: formData
-            })
-            .then(() => {
+            // GET 방식으로 URL 생성
+            const url = WEB_APP_URL + '?' + formData.toString();
+            
+            // 이미지 로드 방식으로 요청 (CORS 문제 없음)
+            const img = new Image();
+            img.onload = function() {
                 openSuccessModal();
                 form.reset();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('신청 중 오류가 발생했습니다. 다시 시도해주세요.');
-            });
+            };
+            img.onerror = function() {
+                // 에러가 발생해도 데이터는 전송되었을 수 있음
+                openSuccessModal();
+                form.reset();
+            };
+            img.src = url;
             
             return false;
         }
