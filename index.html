@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미디어마켓</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 상단 이미지 섹션 */
+        .header-images {
+            width: 800px;
+            margin: 0 auto 40px auto;
+        }
+
+        .header-images img {
+            width: 100%;
+            height: auto;
+            display: block;
+            vertical-align: top;
+        }
+
+        .header-images img:not(:last-child) {
+            margin-bottom: 0;
+        }
+
+        /* 문의폼 CSS */
+        /*백그라운드 컬러 CSS  S*/
+        .Inputform_Background_Color{
+            background-color:#eef1fd;
+        }
+        /*라운드 컬러 CSS  S*/
+        .Inputform_Round_Color{
+            border: none !important;
+        }
+        /**타이틀 이름 색상 CSS S **/
+        .Title_Text_Color .Title_Name,.Input_Radio_Chcek_Text_Terms,.Input_Radio_Chcek_Text_Terms a{
+            color:#222222;
+        }
+        /*Input/select/textarea 백그라운드 컬러 CSS  S*/
+        .Inputbox_Background_Color input,.Inputbox_Background_Color select,.Inputbox_Background_Color textarea,.Inputbox_Background_Color .Radio_DIY_Button_N input[type="radio"] + label{
+            background-color:#ffffff;
+        }
+        /*주소검색 버튼 백그라운드 컬러 CSS  S*/
+        .Inputbox_Button_Background_Color .Button_Address_Search{
+            background-color:#e7e8eb;
+        }
+        /*Input/select/textarea 라운드 컬러 CSS  S*/
+        .Inputbox_Round_Color input,.Inputbox_Round_Color select,.Inputbox_Round_Color textarea,.Inputbox_Round_Color .Button_Address_Search{
+            border-color:#e7e8eb !important;
+        }
+
+        /*Input/select/textarea 폰트컬러 CSS */
+        /* 입력전 S */
+        .Inputbox_Befor_Color input::placeholder,.Inputbox_Befor_Color textarea::placeholder{
+            color:#cfcfd2 !important;
+        }
+        /* 입력후 S */
+        .Inputbox_After_Color input,.Inputbox_After_Color textarea,.Inputbox_After_Color select,.Inputbox_After_Color .Input_Radio_Chcek_Text,.Inputbox_After_Color .Input_Radio_Chcek_Text a,.Inputbox_After_Color .Left_Title_Box,.Inputbox_After_Color .Left_Title_Box_Date,.Inputbox_After_Color  .Radio_DIY_Button_N input[type="radio"] + label{
+            color:#646465 !important;
+        }
+        /*Input/select/textarea 폰트컬러 CSS  E*/
+        /*주소검색 버튼 텍스트 컬러 CSS  S*/
+        .Inputbox_Button_Color .Button_Address_Search a{
+            color:#ffffff;
+        }
+        /* 버튼 텍스트 컬러 S */
+        .Submit_Text_Color .Submit_Button a{
+            color:#fafafa;
+            border-radius: 50px !important;
+        }
+        /* 버튼 배경 컬러 S */
+        .Submit_Background_Color .Submit_Button{
+            background-color:#9d59eb;
+        }
+        .Submit_Background_Color .Submit_Button a {
+            border-radius: 50px !important;
+        }
+        /* 버튼 배경 컬러 E */
+
+        /*폼간간격*/
+        .Db-Cart-block{
+            padding:0 ;
+        }
+
+        /* 입력폼 외부 background 컬러 S */
+        .Inputform_Out_Background{
+            background-color:#eef1fd;
+            padding: 30px 0;
+            width: 100%;
+            margin-left: calc(-50vw + 50%);
+            margin-right: calc(-50vw + 50%);
+        }
+        /* 입력폼 외부 background 컬러 E */
+
+        /* 입력폼 설명 컬러 S */
+        .Input_explain_Text_Color .Title_explain{
+            color:#5e6778 !important;
+        }
+        /* 입력폼 설명 컬러 E */
+
+        /*문자인증 버튼 백그라운드 컬러 CSS  S*/
+        .Inputbox_Button_Background_Color .Button_PNA_Search{
+            background-color:#e7e8eb;
+        }
+        /*Input/select/textarea 라운드 컬러 CSS  S*/
+        .Inputbox_Round_Color input,.Inputbox_Round_Color select,.Inputbox_Round_Color textarea,.Inputbox_Round_Color .Button_PNA_Search,.Inputbox_Round_Color .Radio_DIY_Button_N input[type="radio"] + label{
+            border-color:#e7e8eb !important;
+        }
+
+        /*문자인증 버튼 텍스트 컬러 CSS  S*/
+        .Inputbox_Button_Color .Button_PNA_Search a{
+            color:#ffffff;
+        }
+
+        /*Radio 버튼 선택시 CSS  S*/
+        .Radio_DIY_Button_N input[type="radio"]:checked + label{
+            background-color:#e7e8eb;
+            border-color:#e7e8eb !important;
+            color: #ffffff !important;
+        }
+
+        /* 추가 스타일 */
+        .Input_width_Size_Box {
+            margin: 0 auto;
+        }
+
+        .W_Size_800p {
+            width: 800px;
+        }
+
+        .Round_Radius_Box {
+            border-radius: 5px;
+        }
+
+        .Db-Cart-container {
+            border-radius: 5px;
+            padding: 30px;
+        }
+
+        .Inputform_Space_30 {
+            padding: 30px;
+        }
+
+        .Inputform_Border_0 {
+            border: 0;
+        }
+
+        .Inputform_Radius_5 {
+            border-radius: 5px;
+        }
+
+        .Db-Cart-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+
+        .Inputform_Space {
+            margin: 0;
+        }
+
+        .Db-Cart-12 {
+            width: 100%;
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+
+        .Title_Name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #222222;
+            margin-bottom: 10px;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+        }
+
+        .Title_Font_size_16 {
+            font-size: 16px;
+        }
+
+        .Title_Text_Bold {
+            font-weight: bold;
+        }
+
+        .Title_Family_DIYRoboto {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+        }
+
+        .Inputbox_Bottom_Space_20 {
+            margin-bottom: 20px;
+        }
+
+        .Inputbox_Font_size_14 {
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e7e8eb;
+            border-radius: 7px;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #646465;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            font-weight: 700;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #9d59eb;
+        }
+
+        input[type="text"]::placeholder {
+            color: #cfcfd2;
+        }
+
+        .Inputbox_Border_1 {
+            border: 1px solid #e7e8eb;
+        }
+
+        .Inputbox_Radius_7 {
+            border-radius: 7px;
+        }
+
+        .Inputbox_Family_DIYRoboto {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+        }
+
+        .of-h {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .Box_30p {
+            flex: 1;
+        }
+
+        .Box_Ken {
+            color: #646465;
+            font-size: 14px;
+            padding: 0 5px;
+        }
+
+        .Inputbox_Text_F_s {
+            font-size: 14px;
+        }
+
+        .Submit_Button {
+            margin-top: 10px;
+        }
+
+        .Submit_Button a,
+        .Submit_Button a:link,
+        .Submit_Button a:visited,
+        .Submit_Button a:active {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #9d59eb;
+            color: #fafafa;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px !important;
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            transition: background-color 0.3s;
+        }
+
+        .Submit_Button a:hover {
+            background-color: #8a4dd4;
+            border-radius: 50px !important;
+        }
+
+        .Submit_Font_size_24 {
+            font-size: 24px;
+        }
+
+        .Submit_Family_DIYRoboto {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+        }
+
+        .Submit_Radius_20,
+        .Submit_Radius_20 .Submit_Button,
+        .Submit_Radius_20 .Submit_Button a,
+        .Submit_Radius_20 a {
+            border-radius: 50px !important;
+        }
+        
+        .Db-Cart-container .Submit_Button a {
+            border-radius: 50px !important;
+        }
+        
+        .Inputform_Background_Color .Submit_Button a,
+        .Inputform_Background_Color .Submit_Radius_20 .Submit_Button a {
+            border-radius: 50px !important;
+        }
+
+        /* 푸터 스타일 */
+        .wrap {
+            width: 100%;
+        }
+
+        .Q_W_Size_800px {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .main_copyright {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 30px 20px;
+            text-align: center;
+            line-height: 1.8;
+            font-size: 14px;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+        }
+
+        .landing_sorting_center {
+            text-align: center;
+        }
+
+        .Submit_Text_Bold {
+            font-weight: bold;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23646465' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header-images {
+                width: 100%;
+                max-width: 800px;
+            }
+
+            .W_Size_800p {
+                width: 100%;
+                max-width: 800px;
+            }
+
+            .Inputform_Space_30 {
+                padding: 20px;
+            }
+
+            .Q_W_Size_800px {
+                width: 100%;
+                padding: 0 15px;
+            }
+
+            .main_copyright {
+                padding: 25px 15px;
+                font-size: 13px;
+            }
+
+            .of-h {
+                gap: 0px;
+            }
+
+            .Box_30p {
+                flex: 2;
+                min-width: 0;
+            }
+
+            .Box_Ken {
+                padding: 0 1px;
+                flex-shrink: 0;
+                font-size: 11px;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 상단 이미지 섹션 -->
+        <div class="header-images">
+            <img src="images/h-1.png" alt="영상시청 해주실분 찾습니다">
+            <img src="images/h-2.png" alt="STEP.1 첫시작 이용방법">
+            <img src="images/h-3.png" alt="STEP.2 첫시작 참여방법">
+        </div>
+    </div>
+
+    <!-- 문의폼 섹션 -->
+    <div class="Inputform_Out_Background">
+        <div class="container">
+            <form name="request_1_form" method="post" action="/index.html" id="inquiryForm">
+                <div class="Input_width_Size_Box W_Size_800p Round_Radius_Box">
+                    <div class="Db-Cart-container 
+                        Inputform_Space_30	
+                        Inputform_Background_Color 
+                        Inputform_Round_Color 
+                        Inputform_Border_0 
+                        Inputform_Radius_5 
+                        Title_Font_size_16 
+                        Title_Text_Color 
+                        Title_Text_Bold Title_Family_DIYRoboto 
+                        Title_Dsplay_Off Inputbox_Bottom_Space_20 
+                        Inputbox_Font_size_14 
+                        Inputbox_Befor_Color 
+                        Inputbox_After_Color 
+                        Inputbox_Border_1 
+                        Inputbox_Radius_7 
+                        Inputbox_Round_Color 
+                        Inputbox_Background_Color 
+                        Inputbox_Button_Background_Color 
+                        Inputbox_Button_Color 
+                        Inputbox_Family_DIYRoboto 
+                        Inputbox_Text_Bold_n Input_explain_Font_size_11 
+                        Input_explain_Family_DIYRoboto 
+                        Input_explain_Text_Color 
+                        Submit_Font_size_24 
+                        Submit_Family_DIYRoboto 
+                        Submit_Text_Color 
+                        Submit_Background_Color 
+                        Submit_Radius_20 
+                        Submit_Text_Bold">
+                        <div class="Db-Cart-row Inputform_Space">
+
+                            <input name="Mode_value" type="hidden" value="Write_now">
+                            <input name="g" type="hidden" value="">
+                            <input name="tk" type="hidden" value="176776660683965">
+                            <input name="fcn" type="hidden" value="1">
+
+                            <div class="Db-Cart-12">
+                                <div class="Db-Cart-block">
+                                    <input name="input_check_0" type="hidden" value="1">
+                                    <input name="input_title_0" type="hidden" value="이름">
+                                    <input name="input_type_0" type="hidden" value="0">
+                                    
+                                    <p class="Title_Name">이름</p>
+                                    <input placeholder="이름" name="input_0" type="text" autocomplete="off" value="" onblur="if(this.value){this.style.backgroundColor='#FAFFBD';}else{this.style.backgroundColor='';}">
+                                </div>
+                            </div>
+
+                            <div class="Db-Cart-12">
+                                <div class="Db-Cart-block">
+                                    <input name="input_check_1" type="hidden" value="1">
+                                    <input name="input_title_1" type="hidden" value="연락처">
+                                    <input name="input_type_1" type="hidden" value="9">
+                                    
+                                    <p class="Title_Name">연락처</p>
+                                    <div class="of-h">
+                                        <div class="Box_30p">	
+                                            <select name="input_0_1" placeholder="연락처">
+                                                <option value="010">010</option>
+                                            </select>
+                                        </div>
+                                        <div class="Box_Ken Inputbox_Text_F_s">-</div>
+                                        <div class="Box_30p"><input name="input_1_1" type="text" value="" onkeyup="Auto_focus_set(this.value,4,request_1_form.input_2_1)" maxlength="4" placeholder="연락처" pattern="[0-9]*" inputmode="numeric" min="0" onblur="if(this.value){this.style.backgroundColor='#FAFFBD';}else{this.style.backgroundColor='';}"></div>
+                                        <div class="Box_Ken Inputbox_Text_F_s">-</div>
+                                        <div class="Box_30p"><input name="input_2_1" type="text" value="" maxlength="4" placeholder="연락처" onkeyup="Max_length_set(this,4);" pattern="[0-9]*" inputmode="numeric" min="0" onblur="if(this.value){this.style.backgroundColor='#FAFFBD';}else{this.style.backgroundColor='';}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Db-Cart-12">
+                                <div class="Db-Cart-block">
+                                    <div class="Submit_Button"><a href="#" onclick="Request_input_check(request_1_form);return false;" style="border-radius: 50px !important;">신청하기</a></div>
+                                </div>
+                            </div>	
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    <!-- 푸터 섹션 -->
+    <div class="wrap Q_W_Size_800px" id="Body_area">
+        <div class="main_copyright landing_sorting_center">
+            업체명:미디어마켓<br>
+            대표자명: 송우리<br>
+            사업자등록번호: 816-16-00842<br>
+            회사주소: 경기도 안양시 관악대로 404번길 10-3 305호<br>
+            <br>
+            -----------------------------------------------------------------<br>
+            <br>
+            ※ 본 페이지에서 제공되는 내용은 근무 조건 및 지원 절차에 대한 일반적인 안내이며,<br>
+            실제 근무 형태 및 지급 금액은 개인별 근무시간·성과 등에 따라 다를 수 있습니다.
+        </div>
+    </div>
+
+    <script>
+        // 전화번호 입력 자동 포커스 이동
+        function Auto_focus_set(value, maxLength, nextElement) {
+            if (value.length >= maxLength && nextElement) {
+                nextElement.focus();
+            }
+        }
+
+        // 최대 길이 제한
+        function Max_length_set(element, maxLength) {
+            if (element.value.length > maxLength) {
+                element.value = element.value.substring(0, maxLength);
+            }
+        }
+
+        // 숫자만 입력 허용
+        document.querySelectorAll('input[name^="input_"]').forEach(input => {
+            if (input.pattern === "[0-9]*") {
+                input.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+            }
+        });
+
+        // 폼 제출 처리
+        function Request_input_check(form) {
+            const name = form.input_0.value.trim();
+            const phone1 = form.input_0_1.value;
+            const phone2 = form.input_1_1.value.trim();
+            const phone3 = form.input_2_1.value.trim();
+            
+            if (!name) {
+                alert('이름을 입력해주세요.');
+                form.input_0.focus();
+                return false;
+            }
+            
+            if (!phone2 || !phone3) {
+                alert('연락처를 올바르게 입력해주세요.');
+                if (!phone2) {
+                    form.input_1_1.focus();
+                } else {
+                    form.input_2_1.focus();
+                }
+                return false;
+            }
+            
+            if (phone2.length !== 4 || phone3.length !== 4) {
+                alert('연락처를 올바르게 입력해주세요.');
+                return false;
+            }
+            
+            // 여기에 실제 제출 로직을 추가하세요
+            console.log('이름:', name);
+            console.log('연락처:', phone1 + '-' + phone2 + '-' + phone3);
+            
+            alert('신청이 완료되었습니다.');
+            form.reset();
+            return false;
+        }
+    </script>
+
+</body>
+</html>
