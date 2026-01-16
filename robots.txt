@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mediama0.com/sitemap.xml
+Sitemap: https://media01.co.kr/sitemap.xml
 
