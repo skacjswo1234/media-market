@@ -167,9 +167,6 @@
         /* 버튼 배경 컬러 E */
 
         /*폼간간격*/
-        .Db-Cart-block{
-            padding:0 ;
-        }
 
         /* 입력폼 외부 background 컬러 S */
         .Inputform_Out_Background{
@@ -221,11 +218,6 @@
             border-radius: 5px;
         }
 
-        .Db-Cart-container {
-            border-radius: 5px;
-            padding: 30px;
-        }
-
         .Inputform_Space_30 {
             padding: 30px;
         }
@@ -238,20 +230,8 @@
             border-radius: 5px;
         }
 
-        .Db-Cart-row {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 0 -15px;
-        }
-
         .Inputform_Space {
             margin: 0;
-        }
-
-        .Db-Cart-12 {
-            width: 100%;
-            padding: 0 15px;
-            margin-bottom: 20px;
         }
 
         .Title_Name {
@@ -377,10 +357,6 @@
         .Submit_Radius_20 .Submit_Button,
         .Submit_Radius_20 .Submit_Button a,
         .Submit_Radius_20 a {
-            border-radius: 50px !important;
-        }
-        
-        .Db-Cart-container .Submit_Button a {
             border-radius: 50px !important;
         }
         
@@ -673,8 +649,7 @@
         <div class="container">
             <form name="request_1_form" method="post" action="/index.html" id="inquiryForm">
                 <div class="Input_width_Size_Box W_Size_800p Round_Radius_Box">
-                    <div class="Db-Cart-container 
-                        Inputform_Space_30	
+                    <div class="Inputform_Space_30	
                         Inputform_Background_Color 
                         Inputform_Round_Color 
                         Inputform_Border_0 
@@ -702,15 +677,15 @@
                         Submit_Background_Color 
                         Submit_Radius_20 
                         Submit_Text_Bold">
-                        <div class="Db-Cart-row Inputform_Space">
+                        <div class="Inputform_Space">
 
                             <input name="Mode_value" type="hidden" value="Write_now">
                             <input name="g" type="hidden" value="">
                             <input name="tk" type="hidden" value="176776660683965">
                             <input name="fcn" type="hidden" value="1">
 
-                            <div class="Db-Cart-12">
-                                <div class="Db-Cart-block">
+                            <div>
+                                <div>
                                     <input name="input_check_0" type="hidden" value="1">
                                     <input name="input_title_0" type="hidden" value="이름">
                                     <input name="input_type_0" type="hidden" value="0">
@@ -720,8 +695,8 @@
                                 </div>
                             </div>
 
-                            <div class="Db-Cart-12">
-                                <div class="Db-Cart-block">
+                            <div>
+                                <div>
                                     <input name="input_check_1" type="hidden" value="1">
                                     <input name="input_title_1" type="hidden" value="연락처">
                                     <input name="input_type_1" type="hidden" value="9">
@@ -740,8 +715,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="Db-Cart-12">
-                                <div class="Db-Cart-block">
+                            <div>
+                                <div>
                                     <div class="privacy-agreement" style="margin-bottom: 15px; font-size: 14px; color: #646465; line-height: 1.6;">
                                         <label style="display: flex; align-items: flex-start; cursor: pointer;">
                                             <input type="checkbox" name="privacy_agree" id="privacyAgree" required style="margin-right: 8px; margin-top: 2px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
